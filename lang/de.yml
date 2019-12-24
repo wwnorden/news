@@ -1,0 +1,33 @@
+de:
+  WWN\News\NewsAdmin:
+    MENUTITLE: 'News'
+    SITECONFIGMENUTITLE: 'Uploads'
+
+  WWN\News\NewsArticle:
+    DateFormatted: 'Datum'
+    db_Content: 'Inhalt'
+    db_Date: 'Datum'
+    db_Title: 'Titel'
+    has_many_Links: 'Links'
+    has_many_NewsImages: 'Newsbilder'
+    PLURALNAME: 'News'
+    SINGULARNAME: 'News'
+
+  WWN\News\NewsLink:
+    has_one_NewsArticle: 'Newsartikel'
+    db_Source: 'Quelle'
+    db_Title: 'Titel'
+    db_URL: 'URL'
+    PLURALNAME: 'Links'
+    SINGULARNAME: 'Link'
+
+  WWN\News\NewsImage:
+    db_SortOrder: 'Sortierung'
+    db_Title: 'Titel'
+    has_one_Image: 'Bild'
+    has_one_NewsArticle: 'Newsartikel'
+    PLURALNAME: 'Newsbilder'
+    SINGULARNAME: 'Newsbild'
+
+  WWN\News\NewsPage:
+    SINGULARNAME: 'Newsseite'
