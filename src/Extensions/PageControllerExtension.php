@@ -8,7 +8,7 @@ use SilverStripe\ORM\DataObject;
 use WWN\News\NewsArticle;
 
 /**
- * Extends Page Controller
+ * Extends page controller
  *
  * @package wwn-news
  */

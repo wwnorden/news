@@ -2,6 +2,7 @@
 
 namespace WWN\News;
 
+use PageController;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\PaginatedList;
 
@@ -10,7 +11,7 @@ use SilverStripe\ORM\PaginatedList;
  *
  * @package wwn-news
  */
-class NewsPageController extends \PageController
+class NewsPageController extends PageController
 {
     /**
      * Return paginated news

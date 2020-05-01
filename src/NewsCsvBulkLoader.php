@@ -3,6 +3,7 @@
 namespace WWN\News;
 
 use SilverStripe\Dev\CsvBulkLoader;
+use SilverStripe\ORM\ValidationException;
 
 /**
  * NewsCsvBulkLoader for loading news from csv
@@ -27,7 +28,7 @@ class NewsCsvBulkLoader extends CsvBulkLoader
      * @param string      $val
      * @param array       $record
      *
-     * @throws \SilverStripe\ORM\ValidationException
+     * @throws ValidationException
      */
     public static function setLinkByTitle(&$obj, $val, $record)
     {
@@ -47,7 +48,7 @@ class NewsCsvBulkLoader extends CsvBulkLoader
      * @param string      $val
      * @param array       $record
      *
-     * @throws \SilverStripe\ORM\ValidationException
+     * @throws ValidationException
      */
     public static function setLink1(&$obj, $val, $record)
     {
@@ -66,7 +67,7 @@ class NewsCsvBulkLoader extends CsvBulkLoader
      * @param string      $val
      * @param array       $record
      *
-     * @throws \SilverStripe\ORM\ValidationException
+     * @throws ValidationException
      */
     public static function setLink2(&$obj, $val, $record)
     {
@@ -85,7 +86,7 @@ class NewsCsvBulkLoader extends CsvBulkLoader
      * @param string      $val
      * @param array       $record
      *
-     * @throws \SilverStripe\ORM\ValidationException
+     * @throws ValidationException
      */
     public static function setLink3(&$obj, $val, $record)
     {

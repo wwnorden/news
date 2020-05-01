@@ -3,6 +3,7 @@
 namespace WWN\News;
 
 use SilverStripe\Assets\Image;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\PermissionProvider;
@@ -77,7 +78,7 @@ class NewsImage extends DataObject implements PermissionProvider
     ];
 
     /**
-     * @return \SilverStripe\Forms\FieldList
+     * @return FieldList
      */
     public function getCMSFields()
     {
@@ -91,7 +92,7 @@ class NewsImage extends DataObject implements PermissionProvider
     /**
      * @return Image
      */
-    public function getThumbnail()
+    public function getThumbnail(): Image
     {
         return $this->Image()->CMSThumbnail();
     }
@@ -156,7 +157,7 @@ class NewsImage extends DataObject implements PermissionProvider
     /**
      * @return array
      */
-    public function providePermissions()
+    public function providePermissions(): array
     {
         return array(
             'NEWSIMAGE_VIEW'   => 'View news images',

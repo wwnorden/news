@@ -39,18 +39,26 @@ class NewsSiteConfigExtension extends DataExtension
     {
         $fields->findOrMakeTab('Root.Uploads', _t('NewsAdmin.SITECONFIGMENUTITLE', 'Uploads'));
         $newsFields = array(
-            'NewsImageUploadFolderID' => TreeDropdownField::create('NewsImageUploadFolderID',
-                _t('NewsSiteConfigExtension.has_one_NewsImageUploadFolder', 'Bilder'), Folder::class),
-            'NewsImageUploadFolderByYear' => CheckboxField::create('NewsImageUploadFolderByYear',
-                _t('NewsSiteConfigExtension.db_NewsImageUploadFolderByYear', 'Unterordner pro Jahr'))
+            'NewsImageUploadFolderID' => TreeDropdownField::create(
+                'NewsImageUploadFolderID',
+                _t('NewsSiteConfigExtension.has_one_NewsImageUploadFolder', 'Bilder'),
+                Folder::class
+            ),
+            'NewsImageUploadFolderByYear' => CheckboxField::create(
+                'NewsImageUploadFolderByYear',
+                _t('NewsSiteConfigExtension.db_NewsImageUploadFolderByYear', 'Unterordner pro Jahr')
+            )
         );
         $fields->addFieldsToTab('Root.Uploads', $newsFields);
         $newsHeaders = array(
             'NewsImageUploadFolderID' => _t('Header.UploadFolders', 'Ordner für Newsbilder')
         );
         foreach ($newsHeaders as $insertBefore => $header) {
-            $fields->addFieldToTab('Root.Uploads', HeaderField::create($insertBefore . 'Header', $header),
-                $insertBefore);
+            $fields->addFieldToTab(
+                'Root.Uploads',
+                HeaderField::create($insertBefore . 'Header', $header),
+                $insertBefore
+            );
         }
     }
 }
