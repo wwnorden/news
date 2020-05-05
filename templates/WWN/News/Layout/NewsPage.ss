@@ -1,7 +1,7 @@
 <section class="wrapper">
     <div class="inner">
         <%-- Breadcrumbs --%>
-        <% include Breadcrumbs %>
+        <% include BreadCrumbs %>
         <hr>
 
         <h1>$Headline.RAW</h1>
@@ -26,7 +26,7 @@
                     </ul>
                 <% end_if %>
                 <% if $NewsImages %>
-                    <p><strong>Bilder</strong></p>
+                    <p><strong><% _t('WWN\News\NewsImage.images', 'images') %></strong></p>
                     <div id="$ID">
                         <% loop $NewsImages %>
                             <a href="$Image.URL" alt="$Title" title="$Title">
@@ -48,7 +48,7 @@
 
             <% if $PaginatedNews.MoreThanOnePage %>
                 <% if $PaginatedNews.NotFirstPage %>
-                    <a class="prev button alt small" href="$PaginatedNews.PrevLink">Vorherige</a>
+                    <a class="prev button alt small" href="$PaginatedNews.PrevLink"><% _t('WWN\News\NewsArticle.prev','Previous')%></a>
                 <% end_if %>
                 <% loop $PaginatedNews.PaginationSummary %>
                     <% if $CurrentBool %>
@@ -62,7 +62,7 @@
                     <% end_if %>
                 <% end_loop %>
                 <% if $PaginatedNews.NotLastPage %>
-                    <a class="next button alt small" href="$PaginatedNews.NextLink">Nächste</a>
+                    <a class="next button alt small" href="$PaginatedNews.NextLink"><% _t('WWN\News\NewsArticle.next','Next')%></a>
                 <% end_if %>
             <% end_if %>
         <% end_if %>

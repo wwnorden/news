@@ -10,6 +10,8 @@ de:
     db_Title: 'Titel'
     has_many_Links: 'Links'
     has_many_NewsImages: 'Newsbilder'
+    prev: 'Vorherige'
+    next: 'Nächste'
     PLURALNAME: 'News'
     SINGULARNAME: 'News'
 
@@ -26,8 +28,16 @@ de:
     db_Title: 'Titel'
     has_one_Image: 'Bild'
     has_one_NewsArticle: 'Newsartikel'
+    images: 'Bilder'
     PLURALNAME: 'Newsbilder'
     SINGULARNAME: 'Newsbild'
 
   WWN\News\NewsPage:
     SINGULARNAME: 'Newsseite'
+
+  WWN\News\Extensions\NewsSiteConfigExtension:
+    db_NewsImageUploadFolderByYear: 'Ordner pro Jahr'
+    SITECONFIGMENUTITLE: 'Uploads'
+    Foldername: 'News'
+    UploadFolders: 'Ordner für Newsbilder'
+    has_one_NewsImageUploadFolder: 'Bilder'
