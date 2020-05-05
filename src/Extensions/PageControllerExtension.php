@@ -15,11 +15,12 @@ use WWN\News\NewsArticle;
 class PageControllerExtension extends Extension
 {
     /**
-     * @return \SilverStripe\ORM\DataList
+     * @param int $limit
+     *
+     * @return DataList|null
      */
-    public function GetLatestNews(): ?DataList
+    public function GetLatestNews($limit = 2): ?DataList
     {
-        $articles = DataObject::get(NewsArticle::class, ['Status' => 1], 'Date DESC', '', '2');
-        return $articles;
+        return DataObject::get(NewsArticle::class, ['Status' => 1], 'Date DESC', '', $limit);
     }
 }

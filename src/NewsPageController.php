@@ -2,6 +2,7 @@
 
 namespace WWN\News;
 
+use Exception;
 use PageController;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\PaginatedList;
@@ -17,7 +18,7 @@ class NewsPageController extends PageController
      * Return paginated news
      *
      * @return PaginatedList
-     * @throws \Exception
+     * @throws Exception
      */
     public function PaginatedNews()
     {
