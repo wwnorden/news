@@ -3,6 +3,7 @@
 namespace WWN\News;
 
 use SilverStripe\Control\Director;
+use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataObject;
@@ -30,17 +31,17 @@ class NewsArticle extends DataObject
      * @var array $db
      */
     private static $db = [
-        'Title'   => 'Varchar(150)',
-        'Date'    => 'Date',
+        'Title' => 'Varchar(150)',
+        'Date' => 'Date',
         'Content' => 'HTMLText',
-        'Status'  => 'Boolean' // Update `WWNNewsArticle` SET `Status` = 1
+        'Status' => 'Boolean' // Update `WWNNewsArticle` SET `Status` = 1
     ];
 
     /**
      * @var array $has_many
      */
     private static $has_many = [
-        'Links'      => NewsLink::class,
+        'Links' => NewsLink::class,
         'NewsImages' => NewsImage::class,
     ];
 
@@ -49,7 +50,7 @@ class NewsArticle extends DataObject
      */
     private static $indexes = [
         'SearchFields' => [
-            'type'    => 'fulltext',
+            'type' => 'fulltext',
             'columns' => ['Title', 'Content'],
         ],
     ];
@@ -66,7 +67,7 @@ class NewsArticle extends DataObject
      */
     private static $default_sort = [
         'Date' => 'DESC',
-        'ID'   => 'DESC',
+        'ID' => 'DESC',
     ];
 
     /**
@@ -82,7 +83,13 @@ class NewsArticle extends DataObject
      */
     public function getDateFormatted()
     {
-        return date('d.m.Y', strtotime($this->dbObject('Date')->getValue()));
+        return date(
+            _t(
+                'WWN\News\NewsArticle.DateFormatList',
+                'm/d/Y'
+            ),
+            strtotime($this->dbObject('Date')->getValue())
+        );
     }
 
     /**
@@ -110,9 +117,37 @@ class NewsArticle extends DataObject
         $fields = parent::getCMSFields();
 
         // Content field
-        $fields->findOrMakeTab('Root.ContentTab', _t('Tab.Content', 'Inhalt'));
-        $contentFields = ['Content' => $fields->fieldByName('Root.Main.Content')];
+        $fields->findOrMakeTab(
+            'Root.ContentTab',
+            _t('WWN\News\NewsArticle.ContentTab', 'Content')
+        );
+        $contentFields = [
+            'Content' => $fields->fieldByName('Root.Main.Content')
+        ];
         $fields->addFieldsToTab('Root.ContentTab', $contentFields);
+
+        // Date
+        $date = DateField::create(
+            'Date',
+            _t('WWN\News\NewsArticle.db_Date', 'Date')
+        )
+            ->setHTML5(false)
+            ->setDateFormat(
+                _t('WWN\News\NewsArticle.DateFormat',
+                    'MM/dd/yyyy')
+            );
+        $date->setDescription(
+            _t(
+                'WWN\News\NewsArticle.DateDescription',
+                'e.g. {format}',
+                ['format' => $date->getDateFormat()]
+            )
+        );
+        $date->setAttribute(
+            'placeholder',
+            $date->getDateFormat()
+        );
+        $fields->addFieldsToTab('Root.Main', ['Date' => $date]);
 
         return $fields;
     }
