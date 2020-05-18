@@ -1,0 +1,47 @@
+de:
+  WWN\News\NewsAdmin:
+    MENUTITLE: 'News'
+    SITECONFIGMENUTITLE: 'Uploads'
+
+  WWN\News\NewsArticle:
+    DateFormatted: 'Date'
+    db_Content: 'Content'
+    db_Date: 'Date'
+    db_Title: 'Title'
+    has_many_Links: 'Links'
+    has_many_NewsImages: 'News images'
+    ContentTab: 'Content'
+    DateFormat: 'm/d/Y'
+    DateFormatList: 'm/d/Y'
+    DateDescription: 'Date in the following form {format}'
+    prev: 'Previous'
+    next: 'Next'
+    PLURALNAME: 'News'
+    SINGULARNAME: 'News'
+
+  WWN\News\NewsLink:
+    has_one_NewsArticle: 'News article'
+    db_Source: 'Source'
+    db_Title: 'Title'
+    db_URL: 'URL'
+    PLURALNAME: 'Links'
+    SINGULARNAME: 'Link'
+
+  WWN\News\NewsImage:
+    db_SortOrder: 'Sort order'
+    db_Title: 'Title'
+    has_one_Image: 'Image'
+    has_one_NewsArticle: 'News article'
+    images: 'Images'
+    PLURALNAME: 'News images'
+    SINGULARNAME: 'News image'
+
+  WWN\News\NewsPage:
+    SINGULARNAME: 'News page'
+
+  WWN\News\Extensions\NewsSiteConfigExtension:
+    db_NewsImageUploadFolderByYear: 'Folder by year'
+    SITECONFIGMENUTITLE: 'Uploads'
+    Foldername: 'News'
+    UploadFolders: 'Folder for news images'
+    has_one_NewsImageUploadFolder: 'Images'
