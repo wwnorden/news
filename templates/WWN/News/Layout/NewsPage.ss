@@ -19,9 +19,9 @@
 
                 <% if $Links %>
                     <p><strong>Links</strong></p>
-                    <ul class="actions">
+                    <ul>
                     <% loop $Links %>
-                        <li class="margin-bottom"><a href="$URL" title="$Source" target="_blank" class="button alt small">$Title</a></li>
+                        <li><a href="$URL" title="$Source" target="_blank" class="button">$Title</a></li>
                     <% end_loop %>
                     </ul>
                 <% end_if %>
@@ -31,7 +31,6 @@
                         <% loop $NewsImages %>
                             <a href="$Image.URL" alt="$Title" title="$Title">
                                 <img src="$Image.URL"
-                                     class="img-rounded image-list"
                                      alt="$Title"
                                      title="$Title">
                             </a>
@@ -48,21 +47,21 @@
 
             <% if $PaginatedNews.MoreThanOnePage %>
                 <% if $PaginatedNews.NotFirstPage %>
-                    <a class="prev button alt small" href="$PaginatedNews.PrevLink"><% _t('WWN\News\NewsArticle.prev','Previous')%></a>
+                    <a class="prev button" href="$PaginatedNews.PrevLink"><% _t('WWN\News\NewsArticle.prev','Previous')%></a>
                 <% end_if %>
                 <% loop $PaginatedNews.PaginationSummary %>
                     <% if $CurrentBool %>
-                        <p class="button alt disabled">$PageNum</p>
+                        <p class="button disabled">$PageNum</p>
                     <% else %>
                         <% if $Link %>
-                            <a href="$Link" class="button alt small">$PageNum</a>
+                            <a href="$Link" class="button">$PageNum</a>
                         <% else %>
                             ...
                         <% end_if %>
                     <% end_if %>
                 <% end_loop %>
                 <% if $PaginatedNews.NotLastPage %>
-                    <a class="next button alt small" href="$PaginatedNews.NextLink"><% _t('WWN\News\NewsArticle.next','Next')%></a>
+                    <a class="next button" href="$PaginatedNews.NextLink"><% _t('WWN\News\NewsArticle.next','Next')%></a>
                 <% end_if %>
             <% end_if %>
         <% end_if %>
