@@ -3,8 +3,10 @@
 namespace WWN\News;
 
 use SilverStripe\Assets\Image;
+use SilverStripe\Assets\Storage\DBFile;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Security;
@@ -90,9 +92,9 @@ class NewsImage extends DataObject implements PermissionProvider
     }
 
     /**
-     * @return Image
+     * @return DBFile|DBHTMLText
      */
-    public function getThumbnail(): Image
+    public function getThumbnail()
     {
         return $this->Image()->CMSThumbnail();
     }
