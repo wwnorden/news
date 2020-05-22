@@ -68,7 +68,7 @@ class NewsPageController extends PageController
                 'Article' => $article,
                 'ExtraBreadcrumb' => ArrayData::create(
                     [
-                        'Title' => $article->Name,
+                        'Title' => $article->Title,
                         'Link' => $this->Link($name),
                     ]
                 ),
