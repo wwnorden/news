@@ -8,6 +8,7 @@ de:
     db_Content: 'Inhalt'
     db_Date: 'Datum'
     db_Title: 'Titel'
+    db_URLSegment: 'URL-Segment'
     has_many_Links: 'Links'
     has_many_NewsImages: 'Newsbilder'
     ContentTab: 'Inhalt'
