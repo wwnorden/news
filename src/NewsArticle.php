@@ -122,6 +122,9 @@ class NewsArticle extends DataObject
     {
         $fields = parent::getCMSFields();
 
+        // remove undefined string from urlsegment in backend
+        Requirements::javascript('wwnorden/news:client/dist/js/urlsegmentfield.js');
+
         // Url segment
         $mainFields = array(
             'URLSegment' => SiteTreeURLSegmentField::create(
