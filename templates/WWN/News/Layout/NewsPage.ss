@@ -15,14 +15,15 @@
             <% loop $PaginatedNews %>
                 <span>$Date.Format('dd.MM.y')</span>
                 <h3>$Title.RAW</h3>
-                <p>$Content</p>
+                <p>$Content.LimitWordCount(25)</p>
+                <a href="$Top.Link$URLSegment/"><% _t('WWN\News\NewsArticle.ReadMore', 'Read more') %></a>
 
                 <% if $Links %>
                     <p><strong>Links</strong></p>
                     <ul>
-                    <% loop $Links %>
-                        <li><a href="$URL" title="$Source" target="_blank" class="button">$Title</a></li>
-                    <% end_loop %>
+                        <% loop $Links %>
+                            <li><a href="$URL" title="$Source" target="_blank" class="button">$Title</a></li>
+                        <% end_loop %>
                     </ul>
                 <% end_if %>
                 <% if $NewsImages %>
@@ -47,7 +48,8 @@
 
             <% if $PaginatedNews.MoreThanOnePage %>
                 <% if $PaginatedNews.NotFirstPage %>
-                    <a class="prev button" href="$PaginatedNews.PrevLink"><% _t('WWN\News\NewsArticle.prev','Previous')%></a>
+                    <a class="prev button"
+                       href="$PaginatedNews.PrevLink"><% _t('WWN\News\NewsArticle.prev','Previous')%></a>
                 <% end_if %>
                 <% loop $PaginatedNews.PaginationSummary %>
                     <% if $CurrentBool %>
@@ -61,7 +63,8 @@
                     <% end_if %>
                 <% end_loop %>
                 <% if $PaginatedNews.NotLastPage %>
-                    <a class="next button" href="$PaginatedNews.NextLink"><% _t('WWN\News\NewsArticle.next','Next')%></a>
+                    <a class="next button"
+                       href="$PaginatedNews.NextLink"><% _t('WWN\News\NewsArticle.next','Next')%></a>
                 <% end_if %>
             <% end_if %>
         <% end_if %>

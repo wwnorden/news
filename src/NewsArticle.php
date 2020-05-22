@@ -2,12 +2,16 @@
 
 namespace WWN\News;
 
+use SilverStripe\CMS\Forms\SiteTreeURLSegmentField;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Convert;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
+use SilverStripe\View\Parsers\URLSegmentFilter;
+use SilverStripe\View\Requirements;
 
 /**
  * News article
@@ -32,6 +36,7 @@ class NewsArticle extends DataObject
      */
     private static $db = [
         'Title' => 'Varchar(150)',
+        'URLSegment' => 'Varchar(255)',
         'Date' => 'Date',
         'Content' => 'HTMLText',
         'Status' => 'Boolean' // Update `WWNNewsArticle` SET `Status` = 1
@@ -76,6 +81,7 @@ class NewsArticle extends DataObject
     private static $summary_fields = [
         'Title',
         'DateFormatted' => 'Datum',
+        'URLSegment'
     ];
 
     /**
@@ -116,6 +122,17 @@ class NewsArticle extends DataObject
     {
         $fields = parent::getCMSFields();
 
+        // remove undefined string from urlsegment in backend
+        Requirements::javascript('wwnorden/news:client/dist/js/urlsegmentfield.js');
+
+        // Url segment
+        $mainFields = array(
+            'URLSegment' => SiteTreeURLSegmentField::create(
+                'URLSegment',
+                _t('WWN\News\NewsArticle.db_URLSegment', 'URL-segment')
+            ),
+        );
+
         // Content field
         $fields->findOrMakeTab(
             'Root.ContentTab',
@@ -147,7 +164,17 @@ class NewsArticle extends DataObject
             'placeholder',
             $date->getDateFormat()
         );
-        $fields->addFieldsToTab('Root.Main', ['Date' => $date]);
+        $mainFields['Date'] = $date;
+
+        $status = $fields->dataFieldByName('Status');
+        $status->setDescription(
+            _t(
+                'WWN\News\NewsArticle.StatusDescription',
+                'if active, display in frontend'
+            )
+        );
+
+        $fields->addFieldsToTab('Root.Main', $mainFields);
 
         return $fields;
     }
@@ -175,5 +202,34 @@ class NewsArticle extends DataObject
         }
 
         return $editLink;
+    }
+
+    /**
+     * rewrite urlsegment
+     */
+    protected function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        if (!$this->URLSegment || ($this->URLSegment && $this->isChanged('URLSegment'))){
+            $urlFilter = URLSegmentFilter::create();
+            $filteredTitle = $urlFilter->filter($this->Title);
+
+            // check if duplicate
+            $filter['URLSegment'] = Convert::raw2sql($filteredTitle);
+            $filter['ID:not'] = $this->ID;
+            $object = DataObject::get($this->getClassName())->filter($filter)->first();
+            if ($object){
+                $filteredTitle .= '-' . $this->ID;
+            }
+
+            // Fallback to generic page name if path is empty (= no valid, convertable characters)
+            if (! $filteredTitle || $filteredTitle == '-'
+                || $filteredTitle == '-1'
+            ) {
+                $filteredTitle = "news-$this->ID";
+            }
+            $this->URLSegment = $filteredTitle;
+        }
     }
 }

@@ -19,6 +19,11 @@
             "name": "Claas Witthöft"
         }
     ],
+    "extra": {
+        "expose": [
+            "client/dist"
+        ]
+    },
     "autoload": {
         "psr-4": {
             "WWN\\News\\": "src/"
