@@ -8,6 +8,7 @@ de:
     db_Content: 'Content'
     db_Date: 'Date'
     db_Title: 'Title'
+    db_URLSegment: 'URL segment'
     has_many_Links: 'Links'
     has_many_NewsImages: 'News images'
     ContentTab: 'Content'
@@ -16,6 +17,8 @@ de:
     DateDescription: 'Date in the following form {format}'
     prev: 'Previous'
     next: 'Next'
+    ReadMore: 'Read more'
+    StatusDescription: 'If set article is visible'
     PLURALNAME: 'News'
     SINGULARNAME: 'News'
 
