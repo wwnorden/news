@@ -18,6 +18,7 @@ de:
     prev: 'Vorherige'
     next: 'Nächste'
     ReadMore: 'Weiter lesen'
+    StatusDescription: 'Wenn gesetzt, wird Artikel im Frontend dargestellt'
     PLURALNAME: 'News'
     SINGULARNAME: 'News'
 

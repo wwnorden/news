@@ -4,6 +4,7 @@ namespace WWN\News;
 
 use Exception;
 use PageController;
+use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Convert;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
@@ -46,33 +47,40 @@ class NewsPageController extends PageController
     /**
      * Detail view
      *
-     * @return DBHTMLText
+     * @return DBHTMLText|HTTPResponse
      * @throws Exception
      */
-    public function showNewsArticle(): DBHTMLText
+    public function showNewsArticle()
     {
         $name = Convert::raw2sql($this->getRequest()->param('URLSegment'));
         $filter = [
             'URLSegment' => $name,
+            'Status' => 1,
         ];
-
         $article = NewsArticle::get()->filter($filter)->first();
-        $customise = [
-            'Article' => $article,
-            'ExtraBreadcrumb' => ArrayData::create(
-                [
-                    'Title' => $article->Name,
-                    'Link' => $this->Link($name),
-                ]
-            ),
-            'Name' => $article->Name,
-        ];
 
-        $renderWith = [
-            'WWN/News/NewsArticle',
-            'Page',
-        ];
+        if (! $article) {
+            $url = explode('/', $this->getRequest()->getURL());
 
-        return $this->customise($customise)->renderWith($renderWith);
+            return $this->redirect($url[0].'/');
+        } else {
+            $customise = [
+                'Article' => $article,
+                'ExtraBreadcrumb' => ArrayData::create(
+                    [
+                        'Title' => $article->Name,
+                        'Link' => $this->Link($name),
+                    ]
+                ),
+                'Name' => $article->Name,
+            ];
+
+            $renderWith = [
+                'WWN/News/NewsArticle',
+                'Page',
+            ];
+
+            return $this->customise($customise)->renderWith($renderWith);
+        }
     }
 }

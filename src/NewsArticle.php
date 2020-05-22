@@ -166,6 +166,14 @@ class NewsArticle extends DataObject
         );
         $mainFields['Date'] = $date;
 
+        $status = $fields->dataFieldByName('Status');
+        $status->setDescription(
+            _t(
+                'WWN\News\NewsArticle.StatusDescription',
+                'if active, display in frontend'
+            )
+        );
+
         $fields->addFieldsToTab('Root.Main', $mainFields);
 
         return $fields;

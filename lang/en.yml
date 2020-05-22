@@ -18,6 +18,7 @@ de:
     prev: 'Previous'
     next: 'Next'
     ReadMore: 'Read more'
+    StatusDescription: 'If set article is visible'
     PLURALNAME: 'News'
     SINGULARNAME: 'News'
 
