@@ -132,17 +132,7 @@ class NewsArticle extends DataObject
                 _t('WWN\News\NewsArticle.db_URLSegment', 'URL-segment')
             ),
         );
-
-        // Content field
-        $fields->findOrMakeTab(
-            'Root.ContentTab',
-            _t('WWN\News\NewsArticle.ContentTab', 'Content')
-        );
-        $contentFields = [
-            'Content' => $fields->fieldByName('Root.Main.Content')
-        ];
-        $fields->addFieldsToTab('Root.ContentTab', $contentFields);
-
+        
         // Date
         $date = DateField::create(
             'Date',
