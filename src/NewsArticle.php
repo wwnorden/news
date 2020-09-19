@@ -7,11 +7,22 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridFieldDetailForm;
+use SilverStripe\Forms\GridField\GridFieldEditButton;
+use SilverStripe\Forms\GridField\GridFieldToolbarHeader;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\View\Parsers\URLSegmentFilter;
 use SilverStripe\View\Requirements;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
 
 /**
  * News article
@@ -165,6 +176,30 @@ class NewsArticle extends DataObject
         );
 
         $fields->addFieldsToTab('Root.Main', $mainFields);
+
+        // sorting newsimages
+        $newsImages = GridField::create(
+            'NewsImages',
+            _t('WWN\News\NewsImage.PLURALNAME','News images'),
+            $this->NewsImages(),
+            GridFieldConfig::create()->addComponents(
+                new GridFieldToolbarHeader(),
+                new GridFieldAddNewButton('toolbar-header-right'),
+                new GridFieldDetailForm(),
+                new GridFieldDataColumns(),
+                new GridFieldEditButton(),
+                new GridFieldDeleteAction('unlinkrelation'),
+                new GridFieldDeleteAction(),
+                new GridFieldOrderableRows('SortOrder'),
+                new GridFieldTitleHeader(),
+                new GridFieldAddExistingAutocompleter('before', array('Title'))
+            )
+        );
+        $fields->addFieldsToTab('Root.NewsImages',
+            array(
+                $newsImages
+            )
+        );
 
         return $fields;
     }

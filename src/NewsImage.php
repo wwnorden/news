@@ -29,7 +29,7 @@ class NewsImage extends DataObject implements PermissionProvider
      * @var array $db
      */
     private static $db = array(
-        'Title'     => 'Varchar(100)',
+        'Title' => 'Varchar(100)',
         'SortOrder' => 'Int',
     );
 
@@ -38,7 +38,7 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     private static $has_one = array(
         'NewsArticle' => NewsArticle::class,
-        'Image'       => Image::class,
+        'Image' => Image::class,
     );
 
     /**
@@ -50,7 +50,7 @@ class NewsImage extends DataObject implements PermissionProvider
      * @var array $field_labels
      */
     private static $field_labels = array(
-        'Title'     => 'Titel',
+        'Title' => 'Titel',
         'Thumbnail' => 'Vorschau',
     );
 
@@ -106,7 +106,7 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     public function canView($member = false)
     {
-        if (!$member) {
+        if (! $member) {
             $member = Security::getCurrentUser();
         }
 
@@ -120,7 +120,7 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     public function canEdit($member = false)
     {
-        if (!$member) {
+        if (! $member) {
             $member = Security::getCurrentUser();
         }
 
@@ -135,7 +135,7 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     public function canCreate($member = false, $context = array())
     {
-        if (!$member) {
+        if (! $member) {
             $member = Security::getCurrentUser();
         }
 
@@ -149,7 +149,7 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     public function canDelete($member = false)
     {
-        if (!$member) {
+        if (! $member) {
             $member = Security::getCurrentUser();
         }
 
@@ -162,11 +162,22 @@ class NewsImage extends DataObject implements PermissionProvider
     public function providePermissions(): array
     {
         return array(
-            'NEWSIMAGE_VIEW'   => 'View news images',
-            'NEWSIMAGE_EDIT'   => 'Edit news images',
+            'NEWSIMAGE_VIEW' => 'View news images',
+            'NEWSIMAGE_EDIT' => 'Edit news images',
             'NEWSIMAGE_CREATE' => 'Create news images',
             'NEWSIMAGE_DELETE' => 'Delete news images',
         );
+    }
+
+    /**
+     * Increment SortOrder on save
+     */
+    public function onBeforeWrite()
+    {
+        if (! $this->SortOrder) {
+            $this->SortOrder = NewsImage::get()->max('SortOrder') + 1;
+        }
+        parent::onBeforeWrite();
     }
 
     /**
@@ -180,4 +191,3 @@ class NewsImage extends DataObject implements PermissionProvider
         parent::onAfterWrite();
     }
 }
-
