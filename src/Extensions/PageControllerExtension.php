@@ -34,12 +34,19 @@ class PageControllerExtension extends Extension
             $limit
         );
 
+        // ancestors
+        $url = [];
+        foreach ($site->getAncestors() as $page) {
+            $url[] = $page->URLSegment;
+        }
+        $url = implode('/', array_reverse($url)).'/';
+
         $news = new ArrayList();
         foreach ($result as $key => $val) {
             $news->push(
                 new ArrayData(
                     [
-                        'PageURL' => $site->URLSegment,
+                        'PageURL' => $url.$site->URLSegment,
                         'Article' => $val,
                     ]
                 )
