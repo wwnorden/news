@@ -26,54 +26,54 @@ class NewsImage extends DataObject implements PermissionProvider
     private static $table_name = 'WWNNewsImage';
 
     /**
-     * @var array $db
+     * @var string[]
      */
-    private static $db = array(
+    private static $db = [
         'Title' => 'Varchar(100)',
         'SortOrder' => 'Int',
-    );
+    ];
 
     /**
-     * @var array $has_one
+     * @var string[]
      */
-    private static $has_one = array(
+    private static $has_one = [
         'NewsArticle' => NewsArticle::class,
         'Image' => Image::class,
-    );
+    ];
 
     /**
-     * @var string|array $default_sort
+     * @var string
      */
     private static $default_sort = 'SortOrder';
 
     /**
-     * @var array $field_labels
+     * @var string[]
      */
-    private static $field_labels = array(
+    private static $field_labels = [
         'Title' => 'Titel',
         'Thumbnail' => 'Vorschau',
-    );
+    ];
 
     /**
-     * @var array $searchable_fields
+     * @var string[]
      */
-    private static $searchable_fields = array(
+    private static $searchable_fields = [
         'Title',
-    );
+    ];
 
     /**
-     * @var array $summary_fields
+     * @var string[]
      */
-    private static $summary_fields = array(
+    private static $summary_fields = [
         'Title',
         'Thumbnail',
         //for virtual field Thumbnail, set $searchable_fields without Thumbnail
-    );
+    ];
 
     /**
      * Publish image by default while news article is published
      *
-     * @var array $owns
+     * @var string[]
      */
     private static $owns = [
         'Image',
@@ -82,11 +82,19 @@ class NewsImage extends DataObject implements PermissionProvider
     /**
      * @return FieldList
      */
-    public function getCMSFields()
+    public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
         $fields->removeByName('NewsArticleID');
         $fields->removeByName('SortOrder');
+
+        $image = $fields->dataFieldByName('Image');
+        $image->setFolderName(
+            _t(
+                'WWN\News\Extensions\NewsSiteConfigExtension.Foldername',
+                'Foldername'
+            ).date('Y')
+        );
 
         return $fields;
     }
@@ -133,7 +141,7 @@ class NewsImage extends DataObject implements PermissionProvider
      *
      * @return bool|int
      */
-    public function canCreate($member = false, $context = array())
+    public function canCreate($member = false, $context = [])
     {
         if (! $member) {
             $member = Security::getCurrentUser();
@@ -161,12 +169,12 @@ class NewsImage extends DataObject implements PermissionProvider
      */
     public function providePermissions(): array
     {
-        return array(
+        return [
             'NEWSIMAGE_VIEW' => 'View news images',
             'NEWSIMAGE_EDIT' => 'Edit news images',
             'NEWSIMAGE_CREATE' => 'Create news images',
             'NEWSIMAGE_DELETE' => 'Delete news images',
-        );
+        ];
     }
 
     /**
