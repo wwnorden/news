@@ -93,7 +93,7 @@ class NewsImage extends DataObject implements PermissionProvider
             _t(
                 'WWN\News\Extensions\NewsSiteConfigExtension.Foldername',
                 'Foldername'
-            ).date('Y')
+            ).'/'.date('Y')
         );
 
         return $fields;
