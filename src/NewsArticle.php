@@ -180,7 +180,7 @@ class NewsArticle extends DataObject
         // sorting newsimages
         $newsImages = GridField::create(
             'NewsImages',
-            _t('WWN\News\NewsImage.PLURALNAME','News images'),
+            _t('WWN\News\NewsArticle.has_many_NewsImages','News images'),
             $this->NewsImages(),
             GridFieldConfig::create()->addComponents(
                 new GridFieldToolbarHeader(),
@@ -195,7 +195,7 @@ class NewsArticle extends DataObject
                 new GridFieldAddExistingAutocompleter('before', array('Title'))
             )
         );
-        $fields->addFieldsToTab('Root.NewsImages',
+        $fields->addFieldsToTab('Root.'._t('WWN\News\NewsArticle.has_many_NewsImages','News images'),
             array(
                 $newsImages
             )
