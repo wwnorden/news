@@ -29,6 +29,7 @@ use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
  *
  * @package wwn-news
  * @property string  $Title
+ * @property string  $URLSegment
  * @property string  $Date
  * @property string  $Content
  * @property boolean $Status
@@ -43,7 +44,7 @@ class NewsArticle extends DataObject
     private static $table_name = 'WWNNewsArticle';
 
     /**
-     * @var array $db
+     * @var string[]
      */
     private static $db = [
         'Title' => 'Varchar(150)',
@@ -54,7 +55,7 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $has_many
+     * @var string[]
      */
     private static $has_many = [
         'Links' => NewsLink::class,
@@ -62,7 +63,7 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $indexes
+     * @var array[]
      */
     private static $indexes = [
         'SearchFields' => [
@@ -72,14 +73,14 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $defaults
+     * @var int[]
      */
-    private static $defaults = array(
+    private static $defaults = [
         'Status' => 0,
-    );
+    ];
 
     /**
-     * @var array $default_sort
+     * @var string[]
      */
     private static $default_sort = [
         'Date' => 'DESC',
@@ -87,18 +88,19 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $summary_fields
+     * @var string[]
      */
     private static $summary_fields = [
         'Title',
         'DateFormatted' => 'Datum',
-        'URLSegment'
+        'URLSegment',
+        'StatusFormatted',
     ];
 
     /**
-     * @return mixed
+     * @return false|string
      */
-    public function getDateFormatted()
+    public function getDateFormatted(): ?string
     {
         return date(
             _t(
@@ -110,7 +112,33 @@ class NewsArticle extends DataObject
     }
 
     /**
-     * @var array $searchable_fields
+     * @return false|string
+     */
+    public function StatusFormatted(): ?string
+    {
+        return $this->dbObject('Status')
+            ->getValue()
+            ?
+            _t('WWN\News\NewsArticle.Active', 'active')
+            :
+            _t('WWN\News\NewsArticle.Inactive', 'inactive');
+    }
+
+    /**
+     * @param bool $includerelations
+     *
+     * @return array
+     */
+    public function fieldLabels($includerelations = true): array
+    {
+        $labels = parent::fieldLabels(true);
+        $labels['StatusFormatted'] = _t('WWN\Team\TeamMember.db_Status', 'Status');
+
+        return $labels;
+    }
+
+    /**
+     * @var string[]
      */
     private static $searchable_fields = [
         'Title',
@@ -127,7 +155,7 @@ class NewsArticle extends DataObject
     }
 
     /**
-     * @return FieldList $fields
+     * @return FieldList
      */
     public function getCMSFields(): FieldList
     {
@@ -137,13 +165,13 @@ class NewsArticle extends DataObject
         Requirements::javascript('wwnorden/news:client/dist/js/urlsegmentfield.js');
 
         // Url segment
-        $mainFields = array(
+        $mainFields = [
             'URLSegment' => SiteTreeURLSegmentField::create(
                 'URLSegment',
                 _t('WWN\News\NewsArticle.db_URLSegment', 'URL-segment')
             ),
-        );
-        
+        ];
+
         // Date
         $date = DateField::create(
             'Date',
@@ -180,7 +208,7 @@ class NewsArticle extends DataObject
         // sorting newsimages
         $newsImages = GridField::create(
             'NewsImages',
-            _t('WWN\News\NewsArticle.has_many_NewsImages','News images'),
+            _t('WWN\News\NewsArticle.has_many_NewsImages', 'News images'),
             $this->NewsImages(),
             GridFieldConfig::create()->addComponents(
                 new GridFieldToolbarHeader(),
@@ -192,14 +220,10 @@ class NewsArticle extends DataObject
                 new GridFieldDeleteAction(),
                 new GridFieldOrderableRows('SortOrder'),
                 new GridFieldTitleHeader(),
-                new GridFieldAddExistingAutocompleter('before', array('Title'))
+                new GridFieldAddExistingAutocompleter('before', ['Title'])
             )
         );
-        $fields->addFieldsToTab('Root.'._t('WWN\News\NewsArticle.has_many_NewsImages','News images'),
-            array(
-                $newsImages
-            )
-        );
+        $fields->addFieldsToTab('Root.NewsImages', [$newsImages,]);
 
         return $fields;
     }
@@ -236,25 +260,33 @@ class NewsArticle extends DataObject
     {
         parent::onBeforeWrite();
 
-        if (!$this->URLSegment || ($this->URLSegment && $this->isChanged('URLSegment'))){
-            $urlFilter = URLSegmentFilter::create();
+        $urlFilter = URLSegmentFilter::create();
+        if (! $this->URLSegment) {
+            // no URLSegment, take Title
             $filteredTitle = $urlFilter->filter($this->Title);
-
-            // check if duplicate
-            $filter['URLSegment'] = Convert::raw2sql($filteredTitle);
-            $filter['ID:not'] = $this->ID;
-            $object = DataObject::get($this->getClassName())->filter($filter)->first();
-            if ($object){
-                $filteredTitle .= '-' . $this->ID;
-            }
-
-            // Fallback to generic page name if path is empty (= no valid, convertable characters)
-            if (! $filteredTitle || $filteredTitle == '-'
-                || $filteredTitle == '-1'
-            ) {
-                $filteredTitle = "news-$this->ID";
-            }
-            $this->URLSegment = $filteredTitle;
+        } elseif ($this->URLSegment && $this->isChanged('URLSegment')) {
+            // check URLSegment
+            $filteredTitle = $urlFilter->filter($this->URLSegment);
         }
+
+        // check if duplicate
+        $filter['URLSegment'] = Convert::raw2sql($filteredTitle);
+        if ($this->ID !== 0) {
+            $filter['ID:not'] = $this->ID;
+        }
+        $object = DataObject::get($this->getClassName())->filter($filter)->first();
+
+        if ($object) {
+            $filteredTitle .= '-'.md5($this->Date);
+        }
+
+        // Fallback to generic name if path is empty (= no valid, convertable characters)
+        if (! $filteredTitle || $filteredTitle == '-' || $filteredTitle == '-1') {
+            $filteredTitle = _t(
+                    'WWN\News\NewsArticle.NewsURLTitle',
+                    'newsarticle-'
+                ).md5($this->Date);
+        }
+        $this->URLSegment = $filteredTitle;
     }
 }
