@@ -17,6 +17,7 @@ de:
     DateDescription: 'Date in the following form {format}'
     prev: 'Previous'
     next: 'Next'
+    NewsURLTitle: 'newsarticle-'
     ReadMore: 'Read more'
     StatusDescription: 'If set article is visible'
     PLURALNAME: 'News'
