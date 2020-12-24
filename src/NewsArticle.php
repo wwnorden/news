@@ -43,7 +43,7 @@ class NewsArticle extends DataObject
     private static $table_name = 'WWNNewsArticle';
 
     /**
-     * @var array $db
+     * @var string[]
      */
     private static $db = [
         'Title' => 'Varchar(150)',
@@ -54,7 +54,7 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $has_many
+     * @var string[]
      */
     private static $has_many = [
         'Links' => NewsLink::class,
@@ -62,7 +62,7 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $indexes
+     * @var array[]
      */
     private static $indexes = [
         'SearchFields' => [
@@ -72,14 +72,14 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $defaults
+     * @var int[]
      */
-    private static $defaults = array(
+    private static $defaults = [
         'Status' => 0,
-    );
+    ];
 
     /**
-     * @var array $default_sort
+     * @var string[]
      */
     private static $default_sort = [
         'Date' => 'DESC',
@@ -87,7 +87,7 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @var array $summary_fields
+     * @var string[]
      */
     private static $summary_fields = [
         'Title',
@@ -96,9 +96,9 @@ class NewsArticle extends DataObject
     ];
 
     /**
-     * @return mixed
+     * @return false|string
      */
-    public function getDateFormatted()
+    public function getDateFormatted(): ?string
     {
         return date(
             _t(
@@ -110,7 +110,7 @@ class NewsArticle extends DataObject
     }
 
     /**
-     * @var array $searchable_fields
+     * @var string[]
      */
     private static $searchable_fields = [
         'Title',
@@ -127,7 +127,7 @@ class NewsArticle extends DataObject
     }
 
     /**
-     * @return FieldList $fields
+     * @return FieldList
      */
     public function getCMSFields(): FieldList
     {
@@ -137,12 +137,12 @@ class NewsArticle extends DataObject
         Requirements::javascript('wwnorden/news:client/dist/js/urlsegmentfield.js');
 
         // Url segment
-        $mainFields = array(
+        $mainFields = [
             'URLSegment' => SiteTreeURLSegmentField::create(
                 'URLSegment',
                 _t('WWN\News\NewsArticle.db_URLSegment', 'URL-segment')
             ),
-        );
+        ];
 
         // Date
         $date = DateField::create(
@@ -192,14 +192,10 @@ class NewsArticle extends DataObject
                 new GridFieldDeleteAction(),
                 new GridFieldOrderableRows('SortOrder'),
                 new GridFieldTitleHeader(),
-                new GridFieldAddExistingAutocompleter('before', array('Title'))
+                new GridFieldAddExistingAutocompleter('before', ['Title'])
             )
         );
-        $fields->addFieldsToTab('Root.NewsImages',
-            array(
-                $newsImages,
-            )
-        );
+        $fields->addFieldsToTab('Root.NewsImages', [$newsImages,]);
 
         return $fields;
     }
@@ -259,9 +255,9 @@ class NewsArticle extends DataObject
         // Fallback to generic name if path is empty (= no valid, convertable characters)
         if (! $filteredTitle || $filteredTitle == '-' || $filteredTitle == '-1') {
             $filteredTitle = _t(
-                'WWN\News\NewsArticle.NewsURLTitle',
-                'newsarticle-'
-            ).md5($this->Date);
+                    'WWN\News\NewsArticle.NewsURLTitle',
+                    'newsarticle-'
+                ).md5($this->Date);
         }
         $this->URLSegment = $filteredTitle;
     }
