@@ -29,6 +29,7 @@ use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
  *
  * @package wwn-news
  * @property string  $Title
+ * @property string  $URLSegment
  * @property string  $Date
  * @property string  $Content
  * @property boolean $Status
