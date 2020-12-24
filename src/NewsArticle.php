@@ -94,6 +94,7 @@ class NewsArticle extends DataObject
         'Title',
         'DateFormatted' => 'Datum',
         'URLSegment',
+        'StatusFormatted',
     ];
 
     /**
@@ -108,6 +109,32 @@ class NewsArticle extends DataObject
             ),
             strtotime($this->dbObject('Date')->getValue())
         );
+    }
+
+    /**
+     * @return false|string
+     */
+    public function StatusFormatted(): ?string
+    {
+        return $this->dbObject('Status')
+            ->getValue()
+            ?
+            _t('WWN\News\NewsArticle.Active', 'active')
+            :
+            _t('WWN\News\NewsArticle.Inactive', 'inactive');
+    }
+
+    /**
+     * @param bool $includerelations
+     *
+     * @return array
+     */
+    public function fieldLabels($includerelations = true): array
+    {
+        $labels = parent::fieldLabels(true);
+        $labels['StatusFormatted'] = _t('WWN\Team\TeamMember.db_Status', 'Status');
+
+        return $labels;
     }
 
     /**
