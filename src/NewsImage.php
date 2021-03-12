@@ -185,6 +185,11 @@ class NewsImage extends DataObject implements PermissionProvider
         if (! $this->SortOrder) {
             $this->SortOrder = NewsImage::get()->max('SortOrder') + 1;
         }
+
+        if (empty($this->Title)){
+            $this->Title = $this->owner->Image()->Title ?? $this->owner->Image()->Name;
+        }
+
         parent::onBeforeWrite();
     }
 
