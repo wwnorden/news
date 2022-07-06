@@ -230,7 +230,7 @@ class NewsArticle extends DataObject
      */
     public function getCMSValidator(): RequiredFields
     {
-        return RequiredFields::create('Title');
+        return RequiredFields::create(['Title', 'Content']);
     }
 
     /**
