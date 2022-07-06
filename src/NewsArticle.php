@@ -38,15 +38,9 @@ use Symbiote\GridFieldExtensions\GridFieldTitleHeader;
  */
 class NewsArticle extends DataObject
 {
-    /**
-     * @var string
-     */
-    private static $table_name = 'WWNNewsArticle';
+    private static string $table_name = 'WWNNewsArticle';
 
-    /**
-     * @var string[]
-     */
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(150)',
         'URLSegment' => 'Varchar(255)',
         'Date' => 'Date',
@@ -54,52 +48,39 @@ class NewsArticle extends DataObject
         'Status' => 'Boolean' // Update `WWNNewsArticle` SET `Status` = 1
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $has_many = [
+    private static array $has_many = [
         'Links' => NewsLink::class,
         'NewsImages' => NewsImage::class,
     ];
 
-    /**
-     * @var array[]
-     */
-    private static $indexes = [
+    private static array $indexes = [
         'SearchFields' => [
             'type' => 'fulltext',
             'columns' => ['Title', 'Content'],
         ],
     ];
 
-    /**
-     * @var int[]
-     */
-    private static $defaults = [
+    private static array $defaults = [
         'Status' => 0,
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $default_sort = [
+    private static array $default_sort = [
         'Date' => 'DESC',
         'ID' => 'DESC',
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Title',
         'DateFormatted' => 'Datum',
         'URLSegment',
         'StatusFormatted',
     ];
 
-    /**
-     * @return false|string
-     */
+    private static array $searchable_fields = [
+        'Title',
+        'Content',
+    ];
+
     public function getDateFormatted(): ?string
     {
         return date(
@@ -111,9 +92,6 @@ class NewsArticle extends DataObject
         );
     }
 
-    /**
-     * @return false|string
-     */
     public function StatusFormatted(): ?string
     {
         return $this->dbObject('Status')
@@ -124,11 +102,6 @@ class NewsArticle extends DataObject
             _t('WWN\News\NewsArticle.Inactive', 'inactive');
     }
 
-    /**
-     * @param bool $includerelations
-     *
-     * @return array
-     */
     public function fieldLabels($includerelations = true): array
     {
         $labels = parent::fieldLabels(true);
@@ -137,26 +110,12 @@ class NewsArticle extends DataObject
         return $labels;
     }
 
-    /**
-     * @var string[]
-     */
-    private static $searchable_fields = [
-        'Title',
-        'Content',
-    ];
-
-    /**
-     * @return DataObject|void
-     */
-    public function populateDefaults()
+    public function populateDefaults(): void
     {
         parent::populateDefaults();
         $this->Date = date('d.m.Y');
     }
 
-    /**
-     * @return FieldList
-     */
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -228,12 +187,9 @@ class NewsArticle extends DataObject
         return $fields;
     }
 
-    /**
-     * @return RequiredFields
-     */
     public function getCMSValidator(): RequiredFields
     {
-        return RequiredFields::create('Title');
+        return RequiredFields::create(['Title', 'Content']);
     }
 
     /**
@@ -261,12 +217,11 @@ class NewsArticle extends DataObject
         parent::onBeforeWrite();
 
         $urlFilter = URLSegmentFilter::create();
-        if (! $this->URLSegment) {
+        if (empty($this->URLSegment)) {
             // no URLSegment, take Title
             $filteredTitle = $urlFilter->filter($this->Title);
-        } elseif ($this->URLSegment && $this->isChanged('URLSegment')) {
-            // check URLSegment
-            $filteredTitle = $urlFilter->filter($this->URLSegment);
+        } else {
+            $filteredTitle = $this->URLSegment;
         }
 
         // check if duplicate
@@ -275,18 +230,18 @@ class NewsArticle extends DataObject
             $filter['ID:not'] = $this->ID;
         }
         $object = DataObject::get($this->getClassName())->filter($filter)->first();
-
         if ($object) {
-            $filteredTitle .= '-'.md5($this->Date);
+            $filteredTitle .= '-'.md5(date('d.m.Y h:i:s'));
         }
 
         // Fallback to generic name if path is empty (= no valid, convertable characters)
         if (! $filteredTitle || $filteredTitle == '-' || $filteredTitle == '-1') {
             $filteredTitle = _t(
                     'WWN\News\NewsArticle.NewsURLTitle',
-                    'newsarticle-'
-                ).md5($this->Date);
+                    'newsarticle-###########'
+                ).md5(date('d.m.Y h:i:s'));
         }
+
         $this->URLSegment = $filteredTitle;
     }
 }
