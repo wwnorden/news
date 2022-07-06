@@ -154,9 +154,6 @@ class NewsArticle extends DataObject
         $this->Date = date('d.m.Y');
     }
 
-    /**
-     * @return FieldList
-     */
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -261,12 +258,11 @@ class NewsArticle extends DataObject
         parent::onBeforeWrite();
 
         $urlFilter = URLSegmentFilter::create();
-        if (! $this->URLSegment) {
+        if (empty($this->URLSegment)) {
             // no URLSegment, take Title
             $filteredTitle = $urlFilter->filter($this->Title);
-        } elseif ($this->URLSegment && $this->isChanged('URLSegment')) {
-            // check URLSegment
-            $filteredTitle = $urlFilter->filter($this->URLSegment);
+        } else {
+            $filteredTitle = $this->URLSegment;
         }
 
         // check if duplicate
@@ -275,18 +271,18 @@ class NewsArticle extends DataObject
             $filter['ID:not'] = $this->ID;
         }
         $object = DataObject::get($this->getClassName())->filter($filter)->first();
-
         if ($object) {
-            $filteredTitle .= '-'.md5($this->Date);
+            $filteredTitle .= '-'.md5(date('d.m.Y h:i:s'));
         }
 
         // Fallback to generic name if path is empty (= no valid, convertable characters)
         if (! $filteredTitle || $filteredTitle == '-' || $filteredTitle == '-1') {
             $filteredTitle = _t(
                     'WWN\News\NewsArticle.NewsURLTitle',
-                    'newsarticle-'
-                ).md5($this->Date);
+                    'newsarticle-###########'
+                ).md5(date('d.m.Y h:i:s'));
         }
+
         $this->URLSegment = $filteredTitle;
     }
 }
