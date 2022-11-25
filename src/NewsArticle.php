@@ -104,7 +104,7 @@ class NewsArticle extends DataObject
 
     public function fieldLabels($includerelations = true): array
     {
-        $labels = parent::fieldLabels(true);
+        $labels = parent::fieldLabels($includerelations);
         $labels['StatusFormatted'] = _t('WWN\Team\TeamMember.db_Status', 'Status');
 
         return $labels;
