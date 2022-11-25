@@ -20,51 +20,30 @@ use SilverStripe\Security\Security;
  */
 class NewsImage extends DataObject implements PermissionProvider
 {
-    /**
-     * @var string
-     */
-    private static $table_name = 'WWNNewsImage';
+    private static string $table_name = 'WWNNewsImage';
 
-    /**
-     * @var string[]
-     */
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(100)',
         'SortOrder' => 'Int',
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $has_one = [
+    private static array $has_one = [
         'NewsArticle' => NewsArticle::class,
         'Image' => Image::class,
     ];
 
-    /**
-     * @var string
-     */
-    private static $default_sort = 'SortOrder';
+    private static string $default_sort = 'SortOrder';
 
-    /**
-     * @var string[]
-     */
-    private static $field_labels = [
+    private static array $field_labels = [
         'Title' => 'Titel',
         'Thumbnail' => 'Vorschau',
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $searchable_fields = [
+    private static array $searchable_fields = [
         'Title',
     ];
 
-    /**
-     * @var string[]
-     */
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Title',
         'Thumbnail',
         //for virtual field Thumbnail, set $searchable_fields without Thumbnail
@@ -72,10 +51,8 @@ class NewsImage extends DataObject implements PermissionProvider
 
     /**
      * Publish image by default while news article is published
-     *
-     * @var string[]
      */
-    private static $owns = [
+    private static array $owns = [
         'Image',
     ];
 

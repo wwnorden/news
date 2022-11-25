@@ -24,13 +24,9 @@ class NewsCsvBulkLoader extends CsvBulkLoader
     ];
 
     /**
-     * @param NewsArticle $obj
-     * @param string      $val
-     * @param array       $record
-     *
      * @throws ValidationException
      */
-    public static function setLinkByTitle(&$obj, $val, $record)
+    public static function setLinkByTitle(NewsArticle $obj, string $val, array $record)
     {
         if (!empty($val)) {
             $obj->write();
@@ -44,13 +40,9 @@ class NewsCsvBulkLoader extends CsvBulkLoader
     }
 
     /**
-     * @param NewsArticle $obj
-     * @param string      $val
-     * @param array       $record
-     *
      * @throws ValidationException
      */
-    public static function setLink1(&$obj, $val, $record)
+    public static function setLink1(NewsArticle $obj, string $val, array $record)
     {
         if (!empty($val)) {
             $link = new NewsLink();
@@ -63,13 +55,9 @@ class NewsCsvBulkLoader extends CsvBulkLoader
     }
 
     /**
-     * @param NewsArticle $obj
-     * @param string      $val
-     * @param array       $record
-     *
      * @throws ValidationException
      */
-    public static function setLink2(&$obj, $val, $record)
+    public static function setLink2(NewsArticle $obj, string $val, array $record)
     {
         if (!empty($val)) {
             $link = new NewsLink();
@@ -82,13 +70,9 @@ class NewsCsvBulkLoader extends CsvBulkLoader
     }
 
     /**
-     * @param NewsArticle $obj
-     * @param string      $val
-     * @param array       $record
-     *
      * @throws ValidationException
      */
-    public static function setLink3(&$obj, $val, $record)
+    public static function setLink3(NewsArticle $obj, string $val, array $record)
     {
         if (!empty($val)) {
             $link = new NewsLink();

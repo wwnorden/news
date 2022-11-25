@@ -11,33 +11,18 @@ use SilverStripe\Admin\ModelAdmin;
  */
 class NewsAdmin extends ModelAdmin
 {
-    /**
-     * @var string menuicon svg
-     */
-    private static $menu_icon_class = 'font-icon-info-circled';
+    private static string $menu_icon_class = 'font-icon-info-circled';
 
-    /**
-     * @var string $menu_title
-     */
-    private static $menu_title = 'News';
+    private static string $menu_title = 'News';
 
-    /**
-     * @var string $url_segment
-     */
-    private static $url_segment = 'news';
+    private static string $url_segment = 'news';
 
-    /**
-     * @var array $managed_models
-     */
-    private static $managed_models = array(
+    private static array $managed_models = [
         'WWN\News\NewsArticle',
-        'WWN\News\NewsLink'
-    );
+        'WWN\News\NewsLink',
+    ];
 
-    /**
-     * @var array $model_importers
-     */
-    private static $model_importers = [
+    private static array $model_importers = [
         NewsArticle::class => NewsCsvBulkLoader::class,
     ];
 }
