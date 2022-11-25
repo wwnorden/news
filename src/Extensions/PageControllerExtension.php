@@ -5,9 +5,7 @@ namespace WWN\News\Extensions;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Core\Extension;
 use SilverStripe\ORM\ArrayList;
-use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
 use SilverStripe\View\ArrayData;
 use WWN\News\NewsArticle;
 
@@ -18,12 +16,7 @@ use WWN\News\NewsArticle;
  */
 class PageControllerExtension extends Extension
 {
-    /**
-     * @param int $limit
-     *
-     * @return ArrayList
-     */
-    public function GetLatestNews($limit = 2): ArrayList
+    public function GetLatestNews(int $limit = 2): ArrayList
     {
         $site = DataObject::get(SiteTree::class, ['ClassName' => 'WWN\News\NewsPage'])->first();
         $result = DataObject::get(

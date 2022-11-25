@@ -16,36 +16,21 @@ use SilverStripe\ORM\DataObject;
  */
 class NewsLink extends DataObject
 {
-    /**
-     * @var string
-     */
-    private static $table_name = 'WWNNewsLink';
+    private static string $table_name = 'WWNNewsLink';
 
-    /**
-     * @var array $db
-     */
-    private static $db = [
+    private static array $db = [
         'Title' => 'Varchar(255)',
         'URL' => 'Varchar(255)',
         'Source' => 'Varchar(255)',
     ];
 
-    /**
-     * @var array $has_one
-     */
-    private static $has_one = [
+    private static array $has_one = [
         'NewsArticle' => NewsArticle::class,
     ];
 
-    /**
-     * @var string|array $default_sort
-     */
-    private static $default_sort = ['Title'];
+    private static array $default_sort = ['Title'];
 
-    /**
-     * @var array $summary_fields
-     */
-    private static $summary_fields = [
+    private static array $summary_fields = [
         'Title',
         'URL',
     ];

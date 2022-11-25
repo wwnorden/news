@@ -16,24 +16,16 @@ use SilverStripe\ORM\DataExtension;
  */
 class NewsSiteConfigExtension extends DataExtension
 {
-    /**
-     * @var array $db
-     */
-    private static $db = array(
+    private static array $db = [
         'NewsImageUploadFolderByYear' => 'Boolean',
-    );
+    ];
 
-    /**
-     * @var array $has_one
-     */
-    private static $has_one = array(
+    private static array $has_one = [
         'NewsImageUploadFolder' => Folder::class,
-    );
+    ];
 
     /**
      * Set upload folder for news
-     *
-     * @param FieldList $fields
      */
     public function updateCMSFields(FieldList $fields)
     {

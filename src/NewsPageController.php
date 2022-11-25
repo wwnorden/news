@@ -18,21 +18,20 @@ use SilverStripe\View\ArrayData;
  */
 class NewsPageController extends PageController
 {
-    private static $allowed_actions = [
+    private static array $allowed_actions = [
         'showNewsArticle',
     ];
 
-    private static $url_handlers = [
+    private static array $url_handlers = [
         '$URLSegment!' => 'showNewsArticle',
     ];
 
     /**
      * Return paginated news
      *
-     * @return PaginatedList
      * @throws Exception
      */
-    public function PaginatedNews()
+    public function PaginatedNews(): PaginatedList
     {
         $articles =
             DataObject::get(
