@@ -164,7 +164,7 @@ class NewsArticle extends DataObject
 
         $fields->addFieldsToTab('Root.Main', $mainFields);
 
-        // sorting newsimages
+        // sorting news images
         $newsImages = GridField::create(
             'NewsImages',
             _t('WWN\News\NewsArticle.has_many_NewsImages', 'News images'),

@@ -56,9 +56,6 @@ class NewsImage extends DataObject implements PermissionProvider
         'Image',
     ];
 
-    /**
-     * @return FieldList
-     */
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -142,9 +139,6 @@ class NewsImage extends DataObject implements PermissionProvider
         return Permission::checkMember($member, 'NEWSIMAGE_DELETE');
     }
 
-    /**
-     * @return array
-     */
     public function providePermissions(): array
     {
         return [
