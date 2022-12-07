@@ -56,9 +56,6 @@ class NewsImage extends DataObject implements PermissionProvider
         'Image',
     ];
 
-    /**
-     * @return FieldList
-     */
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
@@ -70,7 +67,8 @@ class NewsImage extends DataObject implements PermissionProvider
             _t(
                 'WWN\News\Extensions\NewsSiteConfigExtension.Foldername',
                 'Foldername'
-            ).'/'.date('Y')
+            ).'/'.date('Y').'/'.trim(str_replace(['/', ',', '.', ' ', '_', '(', ')'], '-',
+                $this->NewsArticle->Title), '-')
         );
 
         return $fields;
@@ -141,9 +139,6 @@ class NewsImage extends DataObject implements PermissionProvider
         return Permission::checkMember($member, 'NEWSIMAGE_DELETE');
     }
 
-    /**
-     * @return array
-     */
     public function providePermissions(): array
     {
         return [
@@ -163,7 +158,7 @@ class NewsImage extends DataObject implements PermissionProvider
             $this->SortOrder = NewsImage::get()->max('SortOrder') + 1;
         }
 
-        if (empty($this->Title)){
+        if (empty($this->Title)) {
             $this->Title = $this->owner->Image()->Title ?? $this->owner->Image()->Name;
         }
 

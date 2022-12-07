@@ -35,17 +35,11 @@ class NewsLink extends DataObject
         'URL',
     ];
 
-    /**
-     * @return RequiredFields
-     */
     public function getCMSValidator(): RequiredFields
     {
         return RequiredFields::create('Title');
     }
 
-    /**
-     * @return FieldList
-     */
     public function getCMSFields(): FieldList
     {
         $fields = parent::getCMSFields();
