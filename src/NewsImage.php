@@ -70,7 +70,8 @@ class NewsImage extends DataObject implements PermissionProvider
             _t(
                 'WWN\News\Extensions\NewsSiteConfigExtension.Foldername',
                 'Foldername'
-            ).'/'.date('Y')
+            ).'/'.date('Y').'/'.trim(str_replace(['/', ',', '.', ' ', '_', '(', ')'], '-',
+                $this->NewsArticle->Title), '-')
         );
 
         return $fields;
@@ -163,7 +164,7 @@ class NewsImage extends DataObject implements PermissionProvider
             $this->SortOrder = NewsImage::get()->max('SortOrder') + 1;
         }
 
-        if (empty($this->Title)){
+        if (empty($this->Title)) {
             $this->Title = $this->owner->Image()->Title ?? $this->owner->Image()->Name;
         }
 
