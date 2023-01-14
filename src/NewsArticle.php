@@ -182,7 +182,7 @@ class NewsArticle extends DataObject
                 new GridFieldAddExistingAutocompleter('before', ['Title'])
             )
         );
-        $fields->addFieldsToTab('Root.NewsImages', [$newsImages,]);
+        $fields->addFieldsToTab('Root.NewsImages', [$newsImages]);
 
         return $fields;
     }
